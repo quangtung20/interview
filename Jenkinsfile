@@ -18,7 +18,8 @@ pipeline {
 
         stage('build'){
             steps {
-                sh 'mvn clean deploy'
+                sh 'mvn dependency:go-offline'
+                sh 'mvn package'
             }
         }
     }

@@ -7,7 +7,7 @@ COPY src src
 RUN mvn package
 
 #stage run
-FROM openjdk:11-alpine AS runing
+FROM openjdk:11-jdk-slim-stretch AS runing
 COPY --from=build /app/target/spring-boot-docker.jar .
 EXPOSE 8080
 CMD ["java", "-jar", "spring-boot-docker.jar"]

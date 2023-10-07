@@ -64,5 +64,12 @@ pipeline {
                 }
             }
         }
+
+        stage('push-image-ecr') {
+            steps{  
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 225186392430.dkr.ecr.us-east-1.amazonaws.com'
+                sh 'docker push 225186392430.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo:latest'
+                }
+        }
     }
 }

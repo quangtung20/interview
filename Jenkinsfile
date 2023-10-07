@@ -20,7 +20,6 @@ pipeline {
             steps {
                 sh 'mvn dependency:go-offline'
                 sh 'mvn package'
-                echo 'hello2'
             }
         }
 

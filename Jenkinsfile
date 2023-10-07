@@ -41,11 +41,19 @@ pipeline {
         }
 
         stage('code-analysis-with-sonar') {
-          steps {
-            withSonarQubeEnv('sonarqube') {
-                sh 'mvn sonar:sonar'
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh 'mvn sonar:sonar'
+                }
             }
-          }
+        }
+
+        stage('quality-gate'){
+            steps {
+                timeout(time: 1, unit: 'HOURS'){
+                    waitForQualityGate abortPipeline: true
+                }
+            }
         }
     }
 }

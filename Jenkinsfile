@@ -23,5 +23,11 @@ pipeline {
                 echo 'hello2'
             }
         }
+
+        stage('unit-test'){
+            steps {
+                sh 'mvn test'
+            }
+        }
     }
 }

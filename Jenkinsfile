@@ -7,7 +7,9 @@ pipeline {
 
     environment {
         PATH = "/opt/apache-maven-3.9.5/bin:$PATH"
-        registry = "225186392430.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo"
+        ECR_REGISTRY = "225186392430.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo"
+        IMAGE_NAME = 'interview'
+        IMAGE_TAG = 'latest'
     }
 
     stages {
@@ -59,16 +61,14 @@ pipeline {
 
         stage('building-image') {
             steps{
-                script {
-                dockerImage = docker.build registry
-                }
+                sh "docker build -t $IMAGE_NAME:$IMAGE_TAG ."
             }
         }
 
         stage('push-image-ecr') {
             steps{  
-                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 225186392430.dkr.ecr.us-east-1.amazonaws.com'
-                sh 'docker push 225186392430.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo:latest'
+                sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ECR_REGISTRY"
+                sh "docker push $ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
                 }
         }
     }

@@ -8,8 +8,9 @@ pipeline {
     environment {
         PATH = "/opt/apache-maven-3.9.5/bin:$PATH"
         ECR_REGISTRY = '225186392430.dkr.ecr.us-east-1.amazonaws.com'
-        IMAGE_NAME = 'my-docker-repo'
+        IMAGE_NAME = 'interview'
         IMAGE_TAG = 'latest'
+        ECR_REPO = '225186392430.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo'
     }
 
     stages {
@@ -68,7 +69,7 @@ pipeline {
         stage('push-image-ecr') {
             steps{  
                 sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY"
-                sh "docker push $ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+                sh "docker push $ECR_REPO/$IMAGE_NAME:$IMAGE_TAG"
                 }
         }
     }

@@ -6,11 +6,8 @@ pipeline {
     }
 
     environment {
-        registry = "225186392430.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo"
-    }
-
-    environment {
         PATH = "/opt/apache-maven-3.9.5/bin:$PATH"
+        registry = "225186392430.dkr.ecr.us-east-1.amazonaws.com/my-docker-repo"
     }
 
     stages {

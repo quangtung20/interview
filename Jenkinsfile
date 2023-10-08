@@ -7,9 +7,9 @@ pipeline {
 
     environment {
         PATH = "/opt/apache-maven-3.9.5/bin:$PATH"
-        ECR_REGISTRY = "225186392430.dkr.ecr.us-east-1.amazonaws.com"
-        IMAGE_NAME = "$ECR_REGISTRY/interview"
+        IMAGE_NAME = "interview"
         IMAGE_TAG = "latest"
+        APP_NAME = "interview-app"
     }
 
     stages {
@@ -74,17 +74,17 @@ pipeline {
         //         }
         // }
 
-        // stage(" Deploy ") {
-        //     steps {
-        //         script {
-        //             def releaseExists = sh(script: "sudo helm list -q | grep interview", returnStatus: true) == 0
-        //             if (releaseExists) {
-        //                 sh "sudo helm uninstall interview" 
-        //             }
-        //             sh "sleep 5"
-        //             sh "sudo helm install interview interview-0.1.0.tgz"
-        //         }
-        //     }
-        // }
+        stage("deploy") {
+            steps {
+                script {
+                    def releaseExists = sh(script: "docker ps --format '{{.Names}}' | grep $DC_NAME", returnStatus: true) == 0
+                    if (releaseExists) {
+                        sh "docker stop $DC_NAME" 
+                    }
+                    sh "sleep 5"
+                    sh "docker run -d -p 8080:8080 --name $DC_NAME $IMAGE_NAME:$IMAGE_TAG"
+                }
+            }
+        }
     }
 }

@@ -81,6 +81,7 @@ pipeline {
                     if (releaseExists) {
                         sh "sudo helm uninstall interview" 
                     }
+                    sh "sleep 5"
                     sh "sudo helm install interview interview-0.1.0.tgz"
                 }
             }

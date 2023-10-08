@@ -63,6 +63,7 @@ pipeline {
             steps{
                 script {
                 dockerImage = docker.build IMAGE_NAME
+                dockerImage.tag("$BUILD_NUMBER")
                 }
             }
         }
@@ -70,7 +71,7 @@ pipeline {
         stage("push-image-ecr") {
             steps{  
                 sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY"
-                sh "docker push $IMAGE_NAME:$IMAGE_TAG"
+                sh "docker push $IMAGE_NAME:$BUILD_NUMBER"
                 }
         }
     }

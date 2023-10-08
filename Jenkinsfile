@@ -77,12 +77,12 @@ pipeline {
         stage("deploy") {
             steps {
                 script {
-                    def releaseExists = sh(script: "docker ps --format '{{.Names}}' | grep $DC_NAME", returnStatus: true) == 0
+                    def releaseExists = sh(script: "docker ps --format '{{.Names}}' | grep $APP_NAME", returnStatus: true) == 0
                     if (releaseExists) {
-                        sh "docker stop $DC_NAME" 
+                        sh "docker stop $APP_NAME" 
                     }
                     sh "sleep 5"
-                    sh "docker run -d -p 8080:8080 --name $DC_NAME $IMAGE_NAME:$IMAGE_TAG"
+                    sh "docker run -d -p 8080:8080 --name $APP_NAME $IMAGE_NAME:$IMAGE_TAG"
                 }
             }
         }

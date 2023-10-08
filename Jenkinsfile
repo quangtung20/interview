@@ -77,10 +77,13 @@ pipeline {
         stage(" Deploy ") {
             steps {
                 script {
-                    echo "<--------------- Helm Deploy Started --------------->"
-                    sh "sudo helm uninstall interview &> null"
-                    sh "sudo helm install interview interview-0.1.0.tgz"
-                    echo "<--------------- Helm deploy Ends --------------->"
+                    def releaseExists = sh(script: "sudo helm list -q | grep interview", returnStatus: true) == 0
+                    
+                    if (releaseExists) {
+                        sh "sudo helm upgrade interview interview-0.1.0.tgz"
+                    } else {
+                        sh "sudo helm install interview interview-0.1.0.tgz"
+                    }
                 }
             }
         }

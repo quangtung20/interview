@@ -78,7 +78,10 @@ pipeline {
             steps {
                 script {
                     echo "<--------------- Helm Deploy Started --------------->"
+                    sh "sudo su"
+                    sh "helm uninstall interview"
                     sh "helm install interview interview-0.1.0.tgz"
+                    sh "exit"
                     echo "<--------------- Helm deploy Ends --------------->"
                 }
             }

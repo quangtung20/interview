@@ -1,71 +1,73 @@
 pipeline {
     agent {
         node {
-            label 'maven'
+            label "maven"
         }
     }
 
     environment {
         PATH = "/opt/apache-maven-3.9.5/bin:$PATH"
-        ECR_REGISTRY = '225186392430.dkr.ecr.us-east-1.amazonaws.com'
+        ECR_REGISTRY = "225186392430.dkr.ecr.us-east-1.amazonaws.com"
         IMAGE_NAME = "$ECR_REGISTRY/interview"
-        IMAGE_TAG = 'latest'
+        IMAGE_TAG = "latest"
     }
 
     stages {
-        stage('clone-code'){
+        stage("clone-code"){
             steps {
-                git branch: 'master', url: 'https://github.com/quangtung20/interview'
+                git branch: "master", url: "https://github.com/quangtung20/interview"
             }
         }
 
-        stage('build'){
+        stage("build"){
             steps {
-                sh 'mvn dependency:go-offline'
-                sh 'mvn package'
+                sh "mvn dependency:go-offline"
+                sh "mvn package"
             }
         }
 
-        stage('unit-test'){
+        stage("unit-test"){
             steps {
-                sh 'mvn test'
+                sh "mvn test"
             }
         }
 
-        stage ('code-analysis-with-maven'){
+        stage ("code-analysis-with-maven"){
             steps {
-                sh 'mvn checkstyle:checkstyle'
+                sh "mvn checkstyle:checkstyle"
             }
             post {
                 success {
-                    echo 'Generated Analysis Result'
+                    echo "Generated Analysis Result"
                 }
             }
         }
 
-        stage('code-analysis-with-sonar') {
+        stage("code-analysis-with-sonar") {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh 'mvn sonar:sonar'
+                withSonarQubeEnv("sonarqube") {
+                    sh "mvn sonar:sonar"
                 }
             }
         }
 
-        stage('quality-gate'){
+        stage("quality-gate"){
             steps {
-                timeout(time: 1, unit: 'HOURS'){
+                timeout(time: 1, unit: "HOURS"){
                     waitForQualityGate abortPipeline: true
                 }
             }
         }
 
-        stage('building-image') {
+        stage("building-image") {
             steps{
+                script {
                 dockerImage = docker.build IMAGE_NAME
+                }
             }
         }
 
-        stage('push-image-ecr') {
+        stage("push-image-ecr") {
             steps{  
                 sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY"
                 sh "docker push $IMAGE_NAME:$IMAGE_TAG"

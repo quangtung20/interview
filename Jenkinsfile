@@ -79,7 +79,8 @@ pipeline {
                 script {
                     def releaseExists = sh(script: "docker ps --format '{{.Names}}' | grep $APP_NAME", returnStatus: true) == 0
                     if (releaseExists) {
-                        sh "docker stop $APP_NAME" 
+                        sh "docker stop $APP_NAME"
+                        sh "docker rm $APP_NAME" 
                     }
                     sh "sleep 5"
                     sh "docker run -d -p 8080:8080 --name $APP_NAME $IMAGE_NAME:$IMAGE_TAG"

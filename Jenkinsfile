@@ -78,7 +78,7 @@ pipeline {
             steps {
                 script {
                     def releaseExists = sh(script: "docker ps --format '{{.Names}}' | grep $APP_NAME", returnStatus: true) == 0
-                    if (releaseExists) {
+                    if (!releaseExists) {
                         sh "docker stop $APP_NAME"
                         sh "docker rm $APP_NAME" 
                     }

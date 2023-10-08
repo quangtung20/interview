@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage("clone-code"){
             steps {
-                git branch: "master", url: "https://github.com/quangtung20/interview"
+                git branch: "dev", url: "https://github.com/quangtung20/interview"
             }
         }
 
@@ -67,24 +67,24 @@ pipeline {
             }
         }
 
-        stage("push-image-ecr") {
-            steps{  
-                sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY"
-                sh "docker push $IMAGE_NAME:$IMAGE_TAG"
-                }
-        }
+        // stage("push-image-ecr") {
+        //     steps{  
+        //         sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY"
+        //         sh "docker push $IMAGE_NAME:$IMAGE_TAG"
+        //         }
+        // }
 
-        stage(" Deploy ") {
-            steps {
-                script {
-                    def releaseExists = sh(script: "sudo helm list -q | grep interview", returnStatus: true) == 0
-                    if (releaseExists) {
-                        sh "sudo helm uninstall interview" 
-                    }
-                    sh "sleep 5"
-                    sh "sudo helm install interview interview-0.1.0.tgz"
-                }
-            }
-        }
+        // stage(" Deploy ") {
+        //     steps {
+        //         script {
+        //             def releaseExists = sh(script: "sudo helm list -q | grep interview", returnStatus: true) == 0
+        //             if (releaseExists) {
+        //                 sh "sudo helm uninstall interview" 
+        //             }
+        //             sh "sleep 5"
+        //             sh "sudo helm install interview interview-0.1.0.tgz"
+        //         }
+        //     }
+        // }
     }
 }

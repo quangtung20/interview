@@ -4,7 +4,7 @@ node('maven-prod') {
     git url: 'https://github.com/quangtung20/interview.git'
   }
 
-  if(branchName = 'master'){
+  if(branchName == 'master'){
     stage('build') {
         sh "echo ${branchName}"
     }

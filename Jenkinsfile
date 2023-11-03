@@ -18,6 +18,6 @@ def masterPipeline(){
 
 switch(branchName) {
     case 'master':
-        masterPipeline(branchName)
+        masterPipeline()
         break
 }

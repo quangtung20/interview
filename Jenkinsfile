@@ -4,14 +4,14 @@ def build(branchName) {
     sh "echo ${branchName}"
 }
 
-def clone(){
-    git url: 'https://github.com/quangtung20/interview.git'
+def clone(branchName){
+    git branch: "${branchName}", url: 'https://github.com/quangtung20/interview.git'
 }
 
 def masterPipeline(branchName){
     node('maven-prod') {
         stage('clone') {
-            clone()
+            clone(branchName)
         }
 
         stage('build') {

@@ -14,13 +14,12 @@ node('maven-prod') {
         build(branchName)
     }
   } else {
-        stage('build') {
-            build(branchName)
-        }
+    stage('build') {
+        build(branchName)
     }
   }
+}
 
 //   stage('Build') {
 //     sh 'echo hello world' 
 //   }
-}

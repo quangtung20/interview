@@ -6,11 +6,11 @@ node('maven-prod') {
 
   if(branchName = 'master'){
     stage('build') {
-        sh 'echo master'
+        sh "echo ${branchName}"
     }
   } else {
         stage('build') {
-        sh 'echo another'
+        sh "echo ${branchName}"
     }
   }
 

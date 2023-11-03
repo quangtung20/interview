@@ -40,16 +40,14 @@ def otherPipeline(branchName){
     }
 }
 
-pipeline {
-    switch(branchName) {
-        case 'master':
-            masterPipeline(branchName)
-            break
-        case 'dev':
-            devPipeline(branchName)
-            break
-        default:
-            masterPipeline(branchName)
-            break
-    }
+switch(branchName) {
+    case 'master':
+        masterPipeline(branchName)
+        break
+    case 'dev':
+        devPipeline(branchName)
+        break
+    default:
+        masterPipeline(branchName)
+        break
 }

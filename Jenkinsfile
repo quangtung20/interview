@@ -1,16 +1,22 @@
+def build(branchName) {
+    sh "echo ${branchName}"
+}
+
+def branchName = env.BRANCH_NAME
+
 node('maven-prod') {
-  def branchName = env.BRANCH_NAME
   stage('Clone') {
     git url: 'https://github.com/quangtung20/interview.git'
   }
 
   if(branchName == 'master'){
     stage('build') {
-        sh "echo ${branchName}"
+        build(branchName)
     }
   } else {
         stage('build') {
-        sh "echo ${branchName}"
+            build(branchName)
+        }
     }
   }
 

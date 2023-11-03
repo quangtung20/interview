@@ -12,6 +12,7 @@ def masterPipeline(branchName){
     node('maven-prod') {
         stage('clone') {
             clone(branchName)
+            sh 'ls /home/ubuntu/jenkins/workspace/prod_test-multi_dev'
         }
 
         stage('build') {

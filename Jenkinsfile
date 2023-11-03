@@ -2,10 +2,10 @@ def build(branchName) {
     sh "echo ${branchName}"
 }
 
-def masterPipeline(){
+def masterPipeline(branchName){
     node('maven-prod') {
         stage('Clone') {
-            git branch: "${branchName}", url: 'https://github.com/quangtung20/interview.git'
+            git url: 'https://github.com/quangtung20/interview.git'
         }
 
         stage('build') {
@@ -34,7 +34,7 @@ def branchName = env.BRANCH_NAME
 
 switch(branchName) {
     case 'master':
-        masterPipeline()
+        masterPipeline(branchName)
         break
 }
 

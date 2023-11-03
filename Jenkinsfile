@@ -1,6 +1,7 @@
 def branchName = env.BRANCH_NAME
 
 def build(branchName) {
+    sh 'ls /home/ubuntu/jenkins/workspace/prod_test-multi_dev'
     sh "echo ${branchName}"
 }
 
@@ -12,7 +13,6 @@ def masterPipeline(branchName){
     node('maven-prod') {
         stage('clone') {
             clone(branchName)
-            sh 'ls /home/ubuntu/jenkins/workspace/prod_test-multi_dev'
         }
 
         stage('build') {

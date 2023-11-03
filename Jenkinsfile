@@ -4,7 +4,7 @@ def build(branchName) {
     sh "echo ${branchName}"
 }
 
-def masterPipeline(){
+def masterPipeline(branchName){
     node('maven-prod') {
         stage('Clone') {
             git url: 'https://github.com/quangtung20/interview.git'
@@ -18,6 +18,6 @@ def masterPipeline(){
 
 switch(branchName) {
     case 'master':
-        masterPipeline()
+        masterPipeline(branchName)
         break
 }
